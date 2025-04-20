@@ -1,1 +1,60 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Fairy Sparkles</title>
+    <style>
+        body {
+            background-color: black;
+            overflow: hidden;
+            margin: 0;
+            
+        }
+
+
+        .spark {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            background-color: transparent;
+            filter: blur(1px); 
+            transform: rotate(0deg);
+            animation: fade 1s linear forwards;
+        }
+
+        @keyframes fade {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2) translateY(-50px) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <p style="color: white;text-align: center;"><code>Move Your Mouse</code></p>
+    <script>
+        document.addEventListener("mousemove", (e) => {
+            let spark = document.createElement("div");
+            spark.classList.add("spark");
+            spark.innerText = "✴︎✴︎✴︎";
+
+            
+            let size = Math.random() * 15 + 10; 
+            spark.style.fontSize = `${size}px`;
+            spark.style.transform = `rotate(${Math.random() * 360}deg)`; 
+            
+            
+            spark.style.left = `${e.clientX}px`;
+            spark.style.top = `${e.clientY}px`;
+            
+            document.body.appendChild(spark);
+
+            
+            setTimeout(() => {
+                spark.remove();
+            }, 1000);
+        });
+    </script>
+
+</body>
+</html>

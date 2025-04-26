@@ -35,7 +35,7 @@
         document.addEventListener("mousemove", (e) => {
             let spark = document.createElement("div");
             spark.classList.add("spark");
-            spark.innerText = "✴︎✴︎✴︎";
+            spark.innerText = "✴︎";
 
             
             let size = Math.random() * 15 + 10; 

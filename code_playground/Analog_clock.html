@@ -1,1 +1,130 @@
 <!-- Analog clock -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analog Clock</title>
+  <style>
+    *{
+      padding: 0px;
+      margin: 0px;
+    }
+    body{
+      background-color: #282828;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .min-spk, .sec-spk, .hour-spk {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: left center;
+      /* The hands will extend from the center outward */
+    }
+    .min-spk{
+      height: 2px;
+      width: 120px;
+      background-color: white;
+    }
+    .sec-spk{
+      height: 1px;
+      width: 140px;
+      background-color: red;
+    }
+    .hour-spk{
+      height: 4px;
+      width: 80px;
+      background-color: #00ff99;
+    }
+    .clock{
+      height: 300px;
+      width: 300px;
+      background-color: black;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 0 30px #000;
+    }
+    .center-dot {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+    .clock-number {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 1.2em;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock">
+    <div class="hour-spk"></div>
+    <div class="min-spk"></div>
+    <div class="sec-spk"></div>
+    <div class="center-dot"></div>
+    <!-- Numbers will be added by JS -->
+  </div>
+  <script>
+    const hour_spk = document.querySelector('.hour-spk');
+    const min_spk = document.querySelector('.min-spk');
+    const sec_spk = document.querySelector('.sec-spk');
+    const clock = document.querySelector('.clock');
+
+    // Add numbers to clock
+    const radius = 130; // distance from center
+    for(let i=1; i<=24; i++){
+      const angle = (i-6) * 15 * Math.PI / 180; // -6 to start at top, 360/24=15deg
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+      const numDiv = document.createElement('div');
+      numDiv.className = 'clock-number';
+      numDiv.textContent = i;
+      numDiv.style.left = `calc(50% + ${x}px)`;
+      numDiv.style.top = `calc(50% + ${y}px)`;
+      clock.appendChild(numDiv);
+    }
+
+    function updateClock() {
+      const date = new Date();
+      const hrs = date.getHours(); // 24-hour format
+      const min = date.getMinutes();
+      const sec = date.getSeconds();
+
+      // Calculate angles
+      const hourAngle = (hrs + min / 60) * 15; // 360/24=15deg per hour
+      const minAngle = (min + sec / 60) * 6; // 360/60
+      const secAngle = sec * 6; // 360/60
+
+      hour_spk.style.transform = `rotate(${hourAngle}deg)`;
+      min_spk.style.transform = `rotate(${minAngle}deg)`;
+      sec_spk.style.transform = `rotate(${secAngle}deg)`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // Initial call
+  </script>
+</body>
+</html>

@@ -5,6 +5,7 @@ Welcome to Bucket List App! This simple, intuitive web-based application helps y
  🚀 Features
 
  **Add a Task**  
+
   Seamlessly add new items to your bucket list.
 
  **Mark as Completed**  

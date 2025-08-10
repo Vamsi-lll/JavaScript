@@ -17,15 +17,15 @@ Welcome to the creative playground! This repository is home to a collection of s
 
 ---
 
-## 🔧 Tech Stack
+#Tech Stack
 
-- **HTML / CSS**
-- **Vanilla JavaScript** (ES6+)
-- No frameworks, no libraries—just pure front-end fun.
+**HTML / CSS**
+**Vanilla JavaScript** (ES6+)
+   No frameworks, no libraries—just pure front-end fun.
 
 ---
 
-## 📸 Screenshots
+# Screenshots
 
 > Coming soon! 
 

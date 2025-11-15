@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Document</title>
+  <title>Draggable Squares</title>
   <style>
     body {
       margin: 0px;
@@ -21,7 +21,7 @@
     button {
       border: none;
       font-weight: 700;
-      margin: 10px;
+      margin: 10px 5px;
       padding: 5px 10px;
       background-color: #305e97;
       color: white;
@@ -31,10 +31,12 @@
 </head>
 <body>
   <button id="new">+</button>
+  <button id="remove">−</button>
   <div class="square" id="square"></div>
 
   <script>
     const add_new = document.getElementById("new");
+    const remove_last = document.getElementById("remove");
 
     function makeDraggable(element) {
       let isGrabbing = false;
@@ -67,6 +69,15 @@
       new_shape.className = "square";
       document.body.appendChild(new_shape);
       makeDraggable(new_shape);
+    });
+
+    // Remove the last added square (excluding the initial one)
+    remove_last.addEventListener("click", () => {
+      const squares = document.querySelectorAll(".square");
+      if (squares.length > 1) {
+        const lastSquare = squares[squares.length - 1];
+        lastSquare.remove();
+      }
     });
   </script>
 </body>

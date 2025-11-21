@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guss the game</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Orbitron">
+
+    <style>
+        * {
+            cursor: none !important;
+        }
+        
+        body{
+            background: linear-gradient(45deg, #0a0a0f 0%, #1a0520 50%, #0f0a1a 100%);
+            height: 100vh;
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Orbitron;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Custom Cyberpunk Cursor */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00FFFF;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px #00FFFF, inset 0 0 10px #00FFFF;
+        }
+        
+        #cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #FF007A;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease;
+            box-shadow: 0 0 15px #FF007A;
+        }
+        
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 0;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Holographic overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                0deg,
+                rgba(255, 0, 122, 0.03) 0%,
+                transparent 50%,
+                rgba(0, 255, 255, 0.03) 100%
+            );
+            animation: holographicShift 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes holographicShift {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.02); }
+        }
+        
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #00FFFF;
+            border-radius: 50%;
+            opacity: 0.6;
+            box-shadow: 0 0 10px #00FFFF;
+            animation: float 10s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-100px) translateX(50px); }
+        }
+        
+        /* Data Stream Lines */
+        .data-stream {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, #00FFFF, transparent);
+            opacity: 0.5;
+            box-shadow: 0 0 10px #00FFFF;
+            animation: streamFlow 3s linear infinite;
+        }
+        
+        @keyframes streamFlow {
+            0% { transform: translateY(-100px); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        .data-stream.pink {
+            background: linear-gradient(to bottom, transparent, #FF007A, transparent);
+            box-shadow: 0 0 10px #FF007A;
+        }
+        
+        /* Hexagon decorations */
+        .hex-decoration {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            animation: hexRotate 10s linear infinite;
+        }
+        
+        @keyframes hexRotate {
+            0% { transform: rotate(0deg); opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg); opacity: 0.3; }
+        }
+        
+        h4{
+            color: #00FFFF;
+            text-align: center;
+            font-size: 1.8em;
+            text-shadow: 0 0 10px #00FFFF, 0 0 20px #FF007A, 0 0 30px #00FFFF;
+            letter-spacing: 3px;
+            animation: glitchText 5s infinite;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        h4::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: #FF007A;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitchTop 3s infinite;
+            text-shadow: 2px 0 #00FFFF;
+        }
+        
+        h4::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: #00FFFF;
+            overflow: hidden;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            animation: glitchBottom 2.5s infinite;
+            text-shadow: -2px 0 #FF007A;
+        }
+        
+        @keyframes glitchText {
+            0%, 90%, 100% { 
+                transform: translate(0);
+                text-shadow: 0 0 10px #00FFFF, 0 0 20px #FF007A, 0 0 30px #00FFFF;
+            }
+            92% { 
+                transform: translate(-2px, 2px);
+                text-shadow: 3px 0 #FF007A, -3px 0 #00FFFF;
+            }
+            94% { 
+                transform: translate(2px, -2px);
+                text-shadow: -3px 0 #00FFFF, 3px 0 #FF007A;
+            }
+        }
+        
+        @keyframes glitchTop {
+            0%, 90%, 100% { transform: translate(0); }
+            92%, 96% { transform: translate(4px, 0); }
+        }
+        
+        @keyframes glitchBottom {
+            0%, 90%, 100% { transform: translate(0); }
+            93%, 97% { transform: translate(-4px, 0); }
+        }
+        
+        .terminal-line {
+            color: #00FFFF;
+            font-size: 10px;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            margin: 5px 0;
+            opacity: 0.7;
+            text-shadow: 0 0 5px #00FFFF;
+        }
+        
+        .terminal-line::before {
+            content: '> ';
+            color: #FF007A;
+        }
+        
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            color: #00FFFF;
+            margin-top: 5px;
+            padding: 5px 0;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .status-bar span {
+            opacity: 0.6;
+            animation: statusBlink 2s infinite;
+        }
+        
+        @keyframes statusBlink {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        .box{
+            min-height: 100px;
+            max-height: auto;
+            min-width: 400px;
+            max-width: auto;
+            background: linear-gradient(135deg, rgba(12, 12, 45, 0.95) 0%, rgba(20, 5, 32, 0.95) 100%);
+            border: 2px solid #00FFFF;
+            padding: 30px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.5),
+                inset 0 0 20px rgba(255, 0, 122, 0.1),
+                0 0 100px rgba(0, 255, 255, 0.2),
+                0 0 200px rgba(255, 0, 122, 0.1);
+            transition: all 0.3s ease;
+            animation: boxPulse 4s infinite, neonFlicker 0.15s infinite alternate;
+            clip-path: polygon(
+                0 0, calc(100% - 20px) 0, 100% 20px,
+                100% 100%, 20px 100%, 0 calc(100% - 20px)
+            );
+        }
+        
+        .box:hover {
+            transform: scale(1.02) perspective(1000px) rotateY(2deg);
+            box-shadow: 
+                0 0 40px rgba(0, 255, 255, 0.9),
+                inset 0 0 40px rgba(255, 0, 122, 0.3),
+                0 0 150px rgba(0, 255, 255, 0.5),
+                0 0 250px rgba(255, 0, 122, 0.2);
+            animation: boxPulse 4s infinite, neonFlicker 0.15s infinite alternate, glitchBox 5s infinite;
+        }
+        
+        @keyframes boxPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(255, 0, 122, 0.1), 0 0 100px rgba(0, 255, 255, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), inset 0 0 30px rgba(255, 0, 122, 0.2), 0 0 150px rgba(0, 255, 255, 0.3); }
+        }
+        
+        @keyframes neonFlicker {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.05); }
+        }
+        
+        @keyframes glitchBox {
+            0%, 90%, 100% { transform: scale(1.02) perspective(1000px) rotateY(2deg); }
+            92% { transform: scale(1.02) perspective(1000px) rotateY(2deg) translateX(2px); }
+            94% { transform: scale(1.02) perspective(1000px) rotateY(2deg) translateX(-2px); }
+            96% { transform: scale(1.02) perspective(1000px) rotateY(2deg) translateX(1px); }
+        }
+        
+        /* Corner decorations with animation */
+        .box::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #FF007A;
+            top: -3px;
+            left: -3px;
+            border-right: none;
+            border-bottom: none;
+            animation: cornerPulse 2s infinite;
+            box-shadow: 0 0 10px #FF007A;
+        }
+        
+        @keyframes cornerPulse {
+            0%, 100% { opacity: 1; transform: translate(0, 0); }
+            50% { opacity: 0.6; transform: translate(-3px, -3px); }
+        }
+        
+        /* Circuit pattern overlay */
+        .circuit-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(90deg, #00FFFF 1px, transparent 1px),
+                linear-gradient(0deg, #00FFFF 1px, transparent 1px),
+                radial-gradient(circle, #FF007A 1px, transparent 1px);
+            background-size: 20px 20px, 20px 20px, 40px 40px;
+            pointer-events: none;
+            animation: circuitFlow 15s linear infinite;
+        }
+        
+        @keyframes circuitFlow {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 20px 20px, 20px 20px, 40px 40px; }
+        }
+        
+        input{
+            all: unset;
+            width: 100%;
+            border: none;
+            background: rgba(0, 255, 255, 0.05);
+            border-bottom: 2px solid #00FFFF;
+            color: #00FFFF;
+            padding: 10px 5px;
+            font-size: 16px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+        
+        input::placeholder {
+            color: rgba(0, 255, 255, 0.5);
+        }
+        
+        button{
+            border: 2px solid #FF007A;
+            background: linear-gradient(135deg, #FF007A 0%, #00FFFF 100%);
+            color: white;
+            font-family: orbitron;
+            padding: 12px 40px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 122, 0.5);
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(255, 0, 122, 0.8), 0 0 60px rgba(0, 255, 255, 0.6);
+            background: linear-gradient(135deg, #00FFFF 0%, #FF007A 100%);
+        }
+        
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        button:active{
+            transform: scale(0.95) translateY(-3px);
+        }
+        
+        .msg_box{
+            width: 100%;
+            min-height: 40px;
+            margin: 15px 0;
+            box-sizing: border-box;
+            padding: 15px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .success{
+            border: 2px solid #00FF88;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 255, 0.1));
+            color: #00FF88;
+            animation: successPulse 1s ease-in-out;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.6), inset 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+        
+        @keyframes successPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 50px rgba(0, 255, 136, 1);
+            }
+        }
+        
+        .error{
+            border: 2px solid #FF007A;
+            background: linear-gradient(135deg, rgba(255, 0, 122, 0.2), rgba(255, 0, 100, 0.1));
+            color: #FF007A;
+            box-shadow: 0 0 20px rgba(255, 0, 122, 0.5), inset 0 0 15px rgba(255, 0, 122, 0.1);
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .hint{
+            border: 2px solid #FFA500;
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.2), rgba(255, 200, 0, 0.1));
+            color: #FFA500;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.5), inset 0 0 15px rgba(255, 165, 0, 0.1);
+            animation: hintGlow 1s ease-in-out infinite;
+        }
+        
+        @keyframes hintGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 165, 0, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(255, 165, 0, 0.8); }
+        }
+        @keyframes hintGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 165, 0, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(255, 165, 0, 0.8); }
+        }
+        
+        .attempts{
+            color: #00FFFF;
+            font-size: 12px;
+            margin-top: 15px;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            letter-spacing: 1px;
+        }
+        
+        /* Scanline Effect - Enhanced */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00FFFF, #FF007A, #00FFFF, transparent);
+            animation: scan 4s linear infinite;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { top: 100%; opacity: 0; }
+        }
+        
+        /* Digital readout display */
+        .digital-readout {
+            font-family: 'Courier New', monospace;
+            color: #00FFFF;
+            font-size: 11px;
+            text-align: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 3px;
+            text-shadow: 0 0 5px #00FFFF;
+            letter-spacing: 2px;
+        }
+        
+        .digital-readout::before {
+            content: '[ ';
+            color: #FF007A;
+        }
+        
+        .digital-readout::after {
+            content: ' ]';
+            color: #FF007A;
+        }
+        
+        /* Glitch effect for form */
+        form {
+            position: relative;
+        }
+        
+        form::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FF007A, #00FFFF, #FF007A);
+            border-radius: 5px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        
+        form:hover::before {
+            opacity: 0.5;
+            
+        }
+        
+        
+        button:active{
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor Elements -->
+    <div id="cursor"></div>
+    <div id="cursor-trail"></div>
+    
+    <!-- Data Stream Lines -->
+    <div class="data-stream" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="data-stream pink" style="left: 25%; animation-delay: 1s;"></div>
+    <div class="data-stream" style="left: 40%; animation-delay: 2s;"></div>
+    <div class="data-stream pink" style="left: 60%; animation-delay: 0.5s;"></div>
+    <div class="data-stream" style="left: 75%; animation-delay: 1.5s;"></div>
+    <div class="data-stream pink" style="left: 90%; animation-delay: 2.5s;"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particle" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 20%; left: 80%; animation-delay: 2s;"></div>
+    <div class="particle" style="top: 70%; left: 20%; animation-delay: 4s;"></div>
+    <div class="particle" style="top: 80%; left: 90%; animation-delay: 1s;"></div>
+    <div class="particle" style="top: 40%; left: 50%; animation-delay: 3s;"></div>
+    <div class="particle" style="top: 60%; left: 70%; animation-delay: 5s;"></div>
+    
+    <!-- Hexagon Decorations -->
+    <div class="hex-decoration" style="top: 15%; left: 5%;"></div>
+    <div class="hex-decoration" style="top: 70%; left: 85%; animation-delay: 5s;"></div>
+    <div class="hex-decoration" style="top: 40%; left: 10%; animation-delay: 3s;"></div>
+    <div class="hex-decoration" style="top: 60%; left: 90%; animation-delay: 7s;"></div>
+    
+    <div class="box">
+        <div class="scanline"></div>
+        <div class="circuit-overlay"></div>
+        
+        <div class="terminal-line">SYSTEM INITIALIZED</div>
+        <div class="terminal-line">NEURAL NETWORK ACTIVE</div>
+        
+        <h4 data-text="⚡ GUESS THE NUM ⚡">⚡ GUESS THE NUM ⚡</h4>
+        
+        <div class="digital-readout">QUANTUM PROCESSOR ONLINE</div>
+        
+        <div class="status-bar">
+            <span>CPU: <span id="cpu-usage">87%</span></span>
+            <span>MEM: <span id="mem-usage">64%</span></span>
+            <span>NET: <span id="net-status">ACTIVE</span></span>
+        </div>
+        <span>
+            <form action="">
+                <input 
+                type="number" 
+                id="inp_num" 
+                placeholder="num between 1 to 100" 
+                min="1"
+                max="100"
+                required>
+                <button type="button" onclick="Guss_the_num()">GO</button>
+            </form>
+        </span>
+        <div class="msg_box" id="msg_box">
+            <p id="message">🎮 Welcome! I'm thinking of a number between 1 and 100. Can you guess it?</p>
+        </div>
+        <div class="attempts" id="attempts">Attempts: 0 | Best Score: --</div>
+    </div>
+    <script>
+        // Custom Cursor Movement
+        const cursor = document.getElementById('cursor');
+        const cursorTrail = document.getElementById('cursor-trail');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorTrail.style.left = e.clientX + 'px';
+                cursorTrail.style.top = e.clientY + 'px';
+            }, 50);
+        });
+        
+        // Cursor grow on hover over interactive elements
+        const interactiveElements = document.querySelectorAll('button');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '40px';
+                cursor.style.height = '40px';
+                cursor.style.borderColor = '#FF007A';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+                cursor.style.borderColor = '#00FFFF';
+            });
+        });
+        
+        // Create click ripple effect
+        document.addEventListener('click', (e) => {
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.width = '0';
+            ripple.style.height = '0';
+            ripple.style.borderRadius = '50%';
+            ripple.style.border = '2px solid #00FFFF';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.zIndex = '9997';
+            ripple.style.animation = 'rippleEffect 0.6s ease-out';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+        
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rippleEffect {
+                0% { width: 0; height: 0; opacity: 1; }
+                100% { width: 100px; height: 100px; opacity: 0; transform: translate(-50px, -50px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Random system stats update
+        setInterval(() => {
+            const cpuUsage = document.getElementById('cpu-usage');
+            const memUsage = document.getElementById('mem-usage');
+            if (cpuUsage) cpuUsage.textContent = Math.floor(Math.random() * 30 + 70) + '%';
+            if (memUsage) memUsage.textContent = Math.floor(Math.random() * 30 + 50) + '%';
+        }, 2000);
+        
+        // Matrix-style falling characters effect
+        function createMatrixRain() {
+            const chars = '01アイウエオカキクケコサシスセソタチツテト';
+            const matrixChar = document.createElement('div');
+            matrixChar.textContent = chars[Math.floor(Math.random() * chars.length)];
+            matrixChar.style.position = 'fixed';
+            matrixChar.style.left = Math.random() * 100 + '%';
+            matrixChar.style.top = '-20px';
+            matrixChar.style.color = Math.random() > 0.5 ? '#00FFFF' : '#FF007A';
+            matrixChar.style.fontSize = '14px';
+            matrixChar.style.opacity = '0.3';
+            matrixChar.style.fontFamily = 'monospace';
+            matrixChar.style.zIndex = '0';
+            matrixChar.style.pointerEvents = 'none';
+            matrixChar.style.animation = `matrixFall ${3 + Math.random() * 3}s linear`;
+            document.body.appendChild(matrixChar);
+            
+            setTimeout(() => matrixChar.remove(), 6000);
+        }
+        
+        const matrixStyle = document.createElement('style');
+        matrixStyle.textContent = `
+            @keyframes matrixFall {
+                0% { transform: translateY(0); opacity: 0; }
+                10% { opacity: 0.3; }
+                90% { opacity: 0.3; }
+                100% { transform: translateY(100vh); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(matrixStyle);
+        
+        setInterval(createMatrixRain, 200);
+        
+        // Glitch effect on random intervals
+        function triggerGlitch() {
+            const box = document.querySelector('.box');
+            box.style.animation = 'none';
+            setTimeout(() => {
+                box.style.animation = 'boxPulse 4s infinite, neonFlicker 0.15s infinite alternate, glitchBox 0.3s';
+                setTimeout(() => {
+                    box.style.animation = 'boxPulse 4s infinite, neonFlicker 0.15s infinite alternate';
+                }, 300);
+            }, 10);
+        }
+        
+        setInterval(triggerGlitch, 8000 + Math.random() * 7000);
+        
+        // Game state variables
+        let system_num = Math.floor(Math.random() * 100) + 1; // Random number between 1-100
+        let attempts = 0;
+        let bestScore = localStorage.getItem('bestScore') || null;
+        let gameOver = false;
+
+        // DOM elements
+        const inp_num = document.getElementById("inp_num");
+        const msgBox = document.getElementById("msg_box");
+        const message = document.getElementById("message");
+        const attemptsDisplay = document.getElementById("attempts");
+
+        // Update best score display
+        updateAttemptsDisplay();
+
+        // Allow Enter key to submit
+        inp_num.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                Guss_the_num();
+            }
+        });
+
+        function Guss_the_num() {
+            if (gameOver) {
+                resetGame();
+                return;
+            }
+
+            const userGuess = parseInt(inp_num.value);
+
+            // Validation
+            if (!userGuess || userGuess < 1 || userGuess > 100) {
+                showMessage("⚠️ Please enter a valid number between 1 and 100!", "error");
+                return;
+            }
+
+            attempts++;
+            updateAttemptsDisplay();
+
+            // Check the guess
+            if (userGuess === system_num) {
+                // Success!
+                gameOver = true;
+                showMessage(`🎉 Congratulations! You got it in ${attempts} ${attempts === 1 ? 'attempt' : 'attempts'}! The number was ${system_num}!`, "success");
+                
+                // Update best score
+                if (!bestScore || attempts < bestScore) {
+                    bestScore = attempts;
+                    localStorage.setItem('bestScore', bestScore);
+                    message.innerHTML += "<br>🏆 New Best Score!";
+                }
+                
+                message.innerHTML += "<br>Click GO to play again!";
+                inp_num.value = '';
+                updateAttemptsDisplay();
+                
+            } else if (userGuess < system_num) {
+                // Too low
+                const difference = system_num - userGuess;
+                if (difference <= 5) {
+                    showMessage(`🔥 So close! Go HIGHER! You're very hot!`, "hint");
+                } else if (difference <= 15) {
+                    showMessage(`📈 Too low! Go HIGHER! Getting warm...`, "hint");
+                } else {
+                    showMessage(`⬆️ Too low! Try a much HIGHER number!`, "error");
+                }
+                
+            } else {
+                // Too high
+                const difference = userGuess - system_num;
+                if (difference <= 5) {
+                    showMessage(`🔥 So close! Go LOWER! You're very hot!`, "hint");
+                } else if (difference <= 15) {
+                    showMessage(`📉 Too high! Go LOWER! Getting warm...`, "hint");
+                } else {
+                    showMessage(`⬇️ Too high! Try a much LOWER number!`, "error");
+                }
+            }
+
+            // Clear input and focus for next attempt
+            inp_num.value = '';
+            
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            msgBox.className = 'msg_box ' + type;
+        }
+
+        function updateAttemptsDisplay() {
+            attemptsDisplay.textContent = `Attempts: ${attempts} | Best Score: ${bestScore || '--'}`;
+        }
+
+        function resetGame() {
+            system_num = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            gameOver = false;
+            showMessage("🎮 New game started! I'm thinking of a number between 1 and 100. Can you guess it?", "");
+            updateAttemptsDisplay();
+            inp_num.value = '';
+            
+        }
+
+        
+    </script>
+</body>
+</html>

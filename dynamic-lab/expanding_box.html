@@ -1,0 +1,42 @@
+<!-- click to grow big -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            height: 100vh;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .box{
+            height: 10px;
+            width: 10px;
+            background: linear-gradient(260deg,rgb(4, 96, 245),blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="box"></div>
+    <script>
+        var  current_height=10
+        var  current_width=10
+        const box=document.getElementById("box")
+        box.addEventListener("click",()=>{
+            current_height=current_height+10
+            current_width=current_width+10
+            box.style.height=current_height+'px';
+            box.style.width=current_width+'px';
+            console.log("clicked ....")
+        })
+    </script>
+</body>
+</html>

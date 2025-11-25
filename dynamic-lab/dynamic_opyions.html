@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <select name="" id="select">
+    </select>
+    <script>
+        const option=['apple','nano bananna',"hamburger"] // modify this options for your custome option
+        const dropdown=document.getElementById('select')
+        const option_selected=document.createElement("h1")
+        
+        document.addEventListener("DOMContentLoaded",()=>{
+            option.forEach(option=>{
+                const opt=document.createElement('option')
+                opt.innerText=option
+                opt.value=option
+                dropdown.appendChild(opt)
+            })
+        })
+        dropdown.addEventListener("change",()=>{
+            option_selected.innerText=dropdown.value
+            document.body.appendChild(option_selected)
+        })
+
+    </script>
+</body>
+</html>

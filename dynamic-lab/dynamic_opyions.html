@@ -10,10 +10,10 @@
     </select>
     <script>
         const option=['apple','nano bananna',"hamburger"] // modify this options for your custome option
-        const dropdown=document.getElementById('select')
-        const option_selected=document.createElement("h1")
+        const dropdown=document.getElementById('select')  // getting the select element into the js code
+        const option_selected=document.createElement("h1") // creating the h1 element 
         
-        document.addEventListener("DOMContentLoaded",()=>{
+        document.addEventListener("DOMContentLoaded",()=>{   // init the function right after the page loade 
             option.forEach(option=>{
                 const opt=document.createElement('option')
                 opt.innerText=option
@@ -21,7 +21,7 @@
                 dropdown.appendChild(opt)
             })
         })
-        dropdown.addEventListener("change",()=>{
+        dropdown.addEventListener("change",()=>{    // adding change event listner
             option_selected.innerText=dropdown.value
             document.body.appendChild(option_selected)
         })

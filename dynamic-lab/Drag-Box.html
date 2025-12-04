@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height: 100vh;
+            background-color: black;
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        .box{
+            position: absolute;
+            height: 50px;
+            width: 50px;
+            background-color: white;
+            box-shadow: 0px 0px 10px white;
+            border: 1px solid white;
+            cursor: grab;
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="box"></div>
+    <script>
+        let box=document.getElementById("box")
+        let isgrabbing=false
+
+        box.addEventListener("mousedown",()=>{
+            box.style.cursor="grabbing"
+            isgrabbing=true
+            console.log(isgrabbing)
+        })
+
+        box.addEventListener("mouseup",()=>{
+            box.style.cursor="grab"
+            isgrabbing=false
+            console.log(isgrabbing)
+        })
+        
+        document.addEventListener("mousemove",(e)=>{
+            if(isgrabbing){
+                console.log(isgrabbing)
+                box.style.top=e.clientY+"px";
+                box.style.left=e.clientX+"px";
+            }
+            else{
+                console.log("yooo... drag it man")
+            }
+        })
+    </script>
+</body>
+</html>

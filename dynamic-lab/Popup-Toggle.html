@@ -68,7 +68,7 @@
         const pop_up=document.getElementById("pop-up")
 
         btn.addEventListener("click",(e)=>{
-            e.stopPropagation()
+            e.stopPropagation() /* event.stopPropagation() tells the browser: “Stop this event right here. Don’t let it bubble up to parent elements.” */
             pop_up.style.display="flex"
             btn.style.display="none"
             console.log("btn clicked...")

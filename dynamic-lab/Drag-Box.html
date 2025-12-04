@@ -26,26 +26,30 @@
 <body>
     <div class="box" id="box"></div>
     <script>
+        /* getting the box element in to the  js code */
         let box=document.getElementById("box")
         let isgrabbing=false
 
+        /* adding the box the event listner if the mocuse clicked then chamge the cursor to the grabbing  */
         box.addEventListener("mousedown",()=>{
             box.style.cursor="grabbing"
             isgrabbing=true
             console.log(isgrabbing)
         })
 
+        /* adding the box the event listner if the mocuse clicked then chamge the cursor to the grab  */
         box.addEventListener("mouseup",()=>{
             box.style.cursor="grab"
             isgrabbing=false
             console.log(isgrabbing)
         })
+
         
         document.addEventListener("mousemove",(e)=>{
             if(isgrabbing){
                 console.log(isgrabbing)
-                box.style.top=e.clientY+"px";
-                box.style.left=e.clientX+"px";
+                box.style.top=e.clientY+"px";/*setting the box position to the mouse position in the y axes  */
+                box.style.left=e.clientX+"px";/*setting the box position to the mouse position in the y axes   */
             }
             else{
                 console.log("yooo... drag it man")

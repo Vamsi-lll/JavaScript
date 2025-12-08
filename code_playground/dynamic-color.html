@@ -1,40 +1,37 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body{
-            background-color: black;
-            color: white;
-            margin: 0px;
-            padding: 0px;
-            box-sizing: border-box;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        }
-        #text{
-            transition: color 0.2s ease-in-out;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: black;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    #text {
+      transition: color 0.2s ease-in-out;
+    }
+  </style>
 </head>
 <body>
-    <h1 id="text">Move the mouse</h1>
-    <script>
-        let colors=["red","blue","green","yellow","orange","violet"]
-        let fonts=[""]
-        let text=document.getElementById("text")
-        document.addEventListener("mousemove",()=>{
-            
-            let color=Math.floor(Math.random()*colors.length)
-            text.style.color=colors[color]
-        })
-        
-    </script>
+  <h1 id="text">Move the mouse</h1>
+  <script>
+    let text = document.getElementById("text");
+    document.addEventListener("mousemove", (e) => {
+      // Use X position to set hue (0–360)
+      let hue = Math.floor((e.clientX / window.innerWidth) * 360);
+      // Use Y position to set lightness (0–100%)
+      let lightness = Math.floor((e.clientY / window.innerHeight) * 100);
+      text.style.color = `hsl(${hue}, 100%, ${lightness}%)`;
+    });
+  </script>
 </body>
 </html>

@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>clipboard_hijacking</title>
+    <title>clipboard hijacking</title>
 </head>
 <body>
-    
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore sapiente vel sint modi adipisci eaque beatae, rem, ratione est laborum in tempore accusantium aspernatur excepturi mollitia aliquam deserunt impedit amet?</p>
+    <script>
+        document.addEventListener("copy",(e)=>{
+            e.preventDefault() //will preven the user to copy
+            e.clipboardData.setData("text/plain","dont copy the text") //will change the copyed text into the "dont copy the text"
+        })
+    </script>
 </body>
 </html>

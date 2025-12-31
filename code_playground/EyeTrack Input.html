@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      padding: 0px;
+      margin: 0px;
+      height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box{
+      height: 300px;
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+    .i-con{
+      display: flex;
+      gap: 20px;
+    }
+    .out-i{
+      height: 51px;
+      width: 30px;
+      border: 1px solid black;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .i-boll{
+      position: absolute;
+      height: 10px;
+      width: 10px;
+      background-color: black;
+      border-radius: 50px;
+      
+      
+    }
+    input{
+      all: unset;
+      border-bottom: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+
+    <div class="i-con">
+      <div class="out-i">
+        <div class="i-boll"></div>
+      </div>
+      <div class="out-i">
+        <div class="i-boll"></div>
+      </div>
+    </div>
+
+    <input type="text" id="inp">
+  </div>
+  <script>
+    const i_boll=document.querySelectorAll('.i-boll')
+    const inp=document.getElementById('inp')
+
+    inp.addEventListener("input",()=>{
+      if(inp.value.length===0){
+        i_boll.forEach(i=>{
+          i.style.left=""
+          i.style.bottom=""
+        })
+      }
+      else if(inp.value.length>0){
+        if(inp.value.length>=17){
+
+          i_boll.forEach(i=>{
+            i.style.left="17px";
+            i.style.bottom="10px";
+          })
+        }
+        else{
+          i_boll.forEach(i=>{
+            i.style.left=inp.value.length+"px";
+            i.style.bottom="10px";
+          })
+        }
+      }
+    })
+  </script>
+</body>
+</html>

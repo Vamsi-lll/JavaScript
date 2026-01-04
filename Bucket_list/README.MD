@@ -1,4 +1,4 @@
- 📝 Bucket List App – Version 1.0
+📝 Bucket List App – Version 1.0
 
 Welcome to Bucket List App! This simple, intuitive web-based application helps you track your goals and dreams by adding, marking as completed, or deleting tasks from your personal bucket list.
 

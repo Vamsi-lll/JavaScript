@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>accordion.html</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #2b3137;
+      height: 100vh;
+      font-family: Calibri, sans-serif;
+    }
+    .accordion {
+      width: 70%;
+      background-color: #24292E;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .accordion-item {
+      border-bottom: 1px solid #444;
+    }
+    .title-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 15px 20px;
+      cursor: pointer;
+    }
+    .symbol {
+      font-size: 22px;
+      transition: transform 0.3s ease;
+    }
+    .content-box {
+      max-height: 0;
+      overflow: hidden;
+      background-color: #333;
+      color: white;
+      font-size: 18px;
+      padding: 0 20px;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+    }
+    .content-box.show {
+      max-height: 300px; /* adjust based on content */
+      padding: 15px 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="accordion">
+    <div class="accordion-item">
+      <div class="title-box">
+        <span class="title">Section 1</span>
+        <span class="symbol">+</span>
+      </div>
+      <div class="content-box">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error.
+      </div>
+    </div>
+    <div class="accordion-item">
+      <div class="title-box">
+        <span class="title">Section 2</span>
+        <span class="symbol">+</span>
+      </div>
+      <div class="content-box">
+        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.
+      </div>
+    </div>
+    <div class="accordion-item">
+      <div class="title-box">
+        <span class="title">Section 3</span>
+        <span class="symbol">+</span>
+      </div>
+      <div class="content-box">
+        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll(".accordion-item");
+
+    items.forEach(item => {
+      const titleBox = item.querySelector(".title-box");
+      const content = item.querySelector(".content-box");
+      const symbol = item.querySelector(".symbol");
+
+      titleBox.addEventListener("click", () => {
+        // Close all other items
+        items.forEach(i => {
+          if (i !== item) {
+            i.querySelector(".content-box").classList.remove("show");
+            i.querySelector(".symbol").textContent = "+";
+          }
+        });
+
+        // Toggle current item
+        content.classList.toggle("show");
+        symbol.textContent = content.classList.contains("show") ? "−" : "+";
+      });
+    });
+  </script>
+</body>
+</html>

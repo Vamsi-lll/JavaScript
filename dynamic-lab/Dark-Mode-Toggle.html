@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark-Mode-Toggle</title>
+  <style>
+    body {
+      background-color: #fdfdfd;
+      color: #222;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.4s, color 0.4s;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+
+    .container {
+      height: 28px;
+      width: 60px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 3px;
+      cursor: pointer;
+      background-color: #eee;
+      transition: background-color 0.4s;
+      margin: 20px auto;
+    }
+
+    body.dark .container {
+      background-color: #444;
+      border-color: #666;
+    }
+
+    .btn {
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      border: none;
+      background-color: orange;
+      transition: transform 0.4s, background-color 0.4s;
+    }
+
+    body.dark .btn {
+      background-color: white;
+      transform: translateX(32px); 
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="toggle">
+    <div class="btn" id="btn"></div>
+  </div>
+  <h1>Hello World</h1>
+
+  <script>
+    const toggle = document.getElementById('toggle');
+    const body = document.body;
+
+    toggle.addEventListener("click", () => {
+      body.classList.toggle("dark");
+    });
+  </script>
+</body>
+</html>

@@ -11,7 +11,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      
+      background: white;
     }
     .outer_con {
       height: 400px;
@@ -19,11 +19,11 @@
       border: 20px solid black;
       background-color: #23e023;
       border-radius: 50%;
-      overflow: hidden; 
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 180px; /* small gap so they fit */
+      gap: 180px;
       cursor: pointer;
     }
     .square {
@@ -31,46 +31,34 @@
       width: 300px;
       background-color: black;
       transform: rotate(45deg);
-      flex-shrink: 0; /* prevents flex from squishing them */
+      flex-shrink: 0;
+    }
+
+    /* Active state */
+    .outer_con.active {
+      background-color: white;
+    }
+    .outer_con.active .square {
+      background-color: gray;
+      border: 10px solid black;
+    }
+    .outer_con.active ~ body {
+      background-color: black;
     }
   </style>
 </head>
 <body>
   <div class="outer_con" id="outer_con">
-    <div class="square" id="square1"></div>
-    <div class="square" id="square2"></div>
+    <div class="square"></div>
+    <div class="square"></div>
   </div>
+
   <script>
-    const ring = document.getElementById("outer_con")
-
-    let isclicked=true
-    ring.addEventListener("click",()=>{
-        if (isclicked){
-
-            const square1 = document.getElementById('square1')
-            const square2 = document.getElementById('square2')
-    
-            ring.style.backgroundColor="white"
-            square1.style.backgroundColor="gray"
-            square1.style.border="10px solid black"
-            square2.style.backgroundColor="gray"
-            square2.style.border="10px solid black"
-    
-            document.body.style.backgroundColor="black"
-            isclicked=false
-        }
-        else{
-            ring.style.backgroundColor="#23e023"
-            square1.style.backgroundColor="black"
-            square1.style.border="none"
-            square2.style.backgroundColor="black"
-            square2.style.border="none"
-    
-            document.body.style.backgroundColor="white"
-            isclicked=true
-        }
-
-    })
+    const ring = document.getElementById("outer_con");
+    ring.addEventListener("click", () => {
+      document.body.style.backgroundColor = 
+        ring.classList.toggle("active") ? "black" : "white";
+    });
   </script>
 </body>
 </html>

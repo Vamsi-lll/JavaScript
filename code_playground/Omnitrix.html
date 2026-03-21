@@ -17,7 +17,7 @@
       height: 400px;
       width: 400px;
       border: 20px solid black;
-      background-color: #23e023;
+      background-color: #23e023; /* default green */
       border-radius: 50%;
       overflow: hidden;
       display: flex;
@@ -25,6 +25,7 @@
       align-items: center;
       gap: 180px;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
     .square {
       height: 300px;
@@ -32,6 +33,7 @@
       background-color: black;
       transform: rotate(45deg);
       flex-shrink: 0;
+      transition: all 0.3s;
     }
 
     /* Active state */
@@ -42,8 +44,15 @@
       background-color: gray;
       border: 10px solid black;
     }
-    .outer_con.active ~ body {
-      background-color: black;
+
+    /* Flashing animation for deactivation */
+    @keyframes flash {
+      0%   { background-color: white; }
+      50%  { background-color: red; }
+      100% { background-color: white; }
+    }
+    .outer_con.deactivating {
+      animation: flash 1s ease-in-out 5; /* 5 cycles = 5 seconds */
     }
   </style>
 </head>
@@ -55,9 +64,27 @@
 
   <script>
     const ring = document.getElementById("outer_con");
+    let active = false;
+
     ring.addEventListener("click", () => {
-      document.body.style.backgroundColor = 
-        ring.classList.toggle("active") ? "black" : "white";
+      if (!active) {
+        // Activate
+        ring.classList.add("active");
+        document.body.style.backgroundColor = "black";
+        active = true;
+      } else {
+        // Start deactivation animation
+        ring.classList.remove("active");
+        ring.classList.add("deactivating");
+        document.body.style.backgroundColor = "white";
+
+        // After 5s animation, reset to default green
+        setTimeout(() => {
+          ring.classList.remove("deactivating");
+          ring.style.backgroundColor = "#23e023";
+          active = false;
+        }, 3000);
+      }
     });
   </script>
 </body>
